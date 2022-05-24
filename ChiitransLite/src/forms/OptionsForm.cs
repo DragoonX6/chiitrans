@@ -4,12 +4,10 @@ using ChiitransLite.translation.atlas;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -37,7 +35,7 @@ namespace ChiitransLite.forms {
                 return form.getOptions();
             }
 
-            public void saveOptions(IDictionary op) {
+            public void saveOptions(JsonElement op) {
                 form.saveOptions(op);
             }
 
@@ -115,18 +113,18 @@ namespace ChiitransLite.forms {
             };
         }
 
-        internal void saveOptions(IDictionary op) {
-            bool clipboard = (bool)op["clipboard"];
-            int sentenceDelay = (int)op["sentenceDelay"];
-            string displayStr = (string)op["display"];
-            string okuriStr = (string)op["okuri"];
-            string theme = (string)op["theme"];
-            bool separateWords = (bool)op["separateWords"];
-            bool separateSpeaker = (bool)op["separateSpeaker"];
-            string nameDictStr = (string)op["nameDict"];
-            string atlasEnv = (string)op["atlasEnv"];
-            bool stayOnTop = (bool)op["stayOnTop"];
-            bool clipboardJapanese = (bool)op["clipboardJapanese"];
+        internal void saveOptions(JsonElement op) {
+            bool clipboard = op.GetProperty("clipboard").GetBoolean();
+            int sentenceDelay = op.GetProperty("sentenceDelay").GetInt32();
+            string displayStr = op.GetProperty("display").GetString();
+            string okuriStr = op.GetProperty("okuri").GetString();
+            string theme = op.GetProperty("theme").GetString();
+            bool separateWords = op.GetProperty("separateWords").GetBoolean();
+            bool separateSpeaker = op.GetProperty("separateSpeaker").GetBoolean();
+            string nameDictStr = op.GetProperty("nameDict").GetString();
+            string atlasEnv = op.GetProperty("atlasEnv").GetString();
+            bool stayOnTop = op.GetProperty("stayOnTop").GetBoolean();
+            bool clipboardJapanese = op.GetProperty("clipboardJapanese").GetBoolean();
 
             TranslationForm.instance.setClipboardTranslation(clipboard);
             if (sentenceDelay >= 10) {
