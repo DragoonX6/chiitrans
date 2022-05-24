@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Windows.Forms;
 
 using ChiitransLite.translation.edict.parseresult;
@@ -31,20 +27,20 @@ namespace ChiitransLite.forms {
                 form.moveAway();
             }
 
-            public void setHeight(int h) {
-                form.Height = h;
+            public void setHeight(JsonElement h) {
+                form.Height = h.GetInt32();
             }
 
-            public void setSelectedPage(string stem, int pageNum) {
-                form.setSelectedPage(stem, pageNum);
+            public void setSelectedPage(JsonElement stem, JsonElement pageNum) {
+                form.setSelectedPage(stem.GetString(), pageNum.GetInt32());
             }
 
-            public void onWheel(int units) {
-                form.onWheel(units);
+            public void onWheel(JsonElement units) {
+                form.onWheel(units.GetInt32());
             }
 
-            public void setReading(string stem, string reading) {
-                form.setReading(stem, reading);
+            public void setReading(JsonElement stem, JsonElement reading) {
+                form.setReading(stem.GetString(), reading.GetString());
             }
         }
 
