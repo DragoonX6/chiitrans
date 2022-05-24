@@ -1,24 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-using System.IO;
-using ChiitransLite.misc;
 using System.Diagnostics;
 using System.Threading;
+
+using ChiitransLite.misc;
 using ChiitransLite.texthook;
-using System.Runtime.InteropServices;
 using ChiitransLite.texthook.ext;
 using ChiitransLite.translation;
-using ChiitransLite.translation.edict;
 using ChiitransLite.settings;
-using System.Globalization;
 using ChiitransLite.translation.atlas;
 
 namespace ChiitransLite.forms {
@@ -61,33 +56,33 @@ namespace ChiitransLite.forms {
                 };
             }
 
-            public void selectWindowClick(bool isSelectWindow) {
-                form.startSelectWindow(isSelectWindow);
+            public void selectWindowClick(JsonElement isSelectWindow) {
+                form.startSelectWindow(isSelectWindow.GetBoolean());
             }
 
             public void browseClick() {
                 form.showBrowseDialog();
             }
 
-            public void connectClick(int pid, string exeName) {
+            public void connectClick(JsonElement pid, JsonElement exeName) {
                 try {
-                    TextHook.instance.connect(pid, exeName);
+                    TextHook.instance.connect(pid.GetInt32(), exeName.GetString());
                     form.connectSuccess();
                 } catch (Exception ex) {
                     form.connectError(ex.Message);
                 }
             }
 
-            public void setContextEnabled(int ctxId, bool isEnabled) {
-                var ctx = (MyContext)TextHook.instance.getContext(ctxId);
+            public void setContextEnabled(JsonElement ctxId, JsonElement isEnabled) {
+                var ctx = (MyContext)TextHook.instance.getContext(ctxId.GetInt32());
                 if (ctx != null) {
-                    ctx.enabled = isEnabled;
+                    ctx.enabled = isEnabled.GetBoolean();
                 }
             }
 
-            public void setContextEnabledOnly(int ctxId) {
+            public void setContextEnabledOnly(JsonElement ctxId) {
                 foreach (MyContext ctx in TextHook.instance.getContexts().Cast<MyContext>()) {
-                    if (ctx.id == ctxId) {
+                    if (ctx.id == ctxId.GetInt32()) {
                         ctx.enabled = true;
                     } else {
                         ctx.enabled = false;
@@ -99,20 +94,20 @@ namespace ChiitransLite.forms {
                 form.showTranslationForm();
             }
 
-            public void setNewContextsBehavior(string b) {
-                (TextHook.instance.getContextFactory() as MyContextFactory).setNewContextsBehavior(b);
+            public void setNewContextsBehavior(JsonElement b) {
+                (TextHook.instance.getContextFactory() as MyContextFactory).setNewContextsBehavior(b.GetString());
             }
 
-            public void showLog(int ctxId) {
-                form.showLog(ctxId);
+            public void showLog(JsonElement ctxId) {
+                form.showLog(ctxId.GetInt32());
             }
 
-            public void translate(string text) {
-                form.translate(text);
+            public void translate(JsonElement text) {
+                form.translate(text.GetString());
             }
 
-            public object getContext(int ctxId) {
-                var ctx = (MyContext)TextHook.instance.getContext(ctxId);
+            public object getContext(JsonElement ctxId) {
+                var ctx = (MyContext)TextHook.instance.getContext(ctxId.GetInt32());
                 if (ctx != null) {
                     return new {
                         id = ctx.id,
