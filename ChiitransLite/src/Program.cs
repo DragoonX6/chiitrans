@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -22,6 +21,7 @@ namespace ChiitransLite {
         /// </summary>
         [STAThread]
         static void Main(string[] cmd) {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
             arguments = cmd;
             AppDomain.CurrentDomain.UnhandledException += (sender, args) => {
                 Exception ex = (Exception)args.ExceptionObject;
