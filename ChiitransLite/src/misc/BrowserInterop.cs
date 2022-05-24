@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 using System.Windows.Forms;
 
 namespace ChiitransLite.misc {
@@ -13,7 +10,6 @@ namespace ChiitransLite.misc {
     public class BrowserInterop {
         private Type userMethodsType;
         private Object userMethods;
-        private JavaScriptSerializer js = new JavaScriptSerializer();
         private WebBrowser browser;
         
         public BrowserInterop(WebBrowser browser, Object userMethods) {
@@ -23,7 +19,7 @@ namespace ChiitransLite.misc {
         }
 
         public string getMethods() {
-            return js.Serialize(userMethods.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public)
+            return JsonSerializer.Serialize(userMethods.GetType().GetMethods(BindingFlags.Instance | BindingFlags.Public)
                 .Select((mi) => mi.Name).Except(new string[] {"Equals", "GetHashCode", "ToString", "GetType"}).ToArray());
         }
 
@@ -32,7 +28,7 @@ namespace ChiitransLite.misc {
             if (string.IsNullOrEmpty(args)) {
                 argsArray = new object[] { };
             } else {
-                argsArray = js.Deserialize<object[]>(args);
+                argsArray = JsonSerializer.Deserialize<object[]>(args);
             }
             bool isInline = queryId == 0;
             string resInline = null;
@@ -40,7 +36,7 @@ namespace ChiitransLite.misc {
                 string resJson;
                 try {
                     object res = userMethodsType.InvokeMember(methodName, BindingFlags.Instance | BindingFlags.Public | BindingFlags.InvokeMethod, null, userMethods, argsArray);
-                    resJson = js.Serialize(res);
+                    resJson = JsonSerializer.Serialize(res);
                 } catch (Exception e) {
                     while (e.InnerException != null) {
                         e = e.InnerException;

@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 
 using ChiitransLite.settings;
 using ChiitransLite.misc;
@@ -20,9 +19,8 @@ namespace ChiitransLite.translation.edict.inflect {
             try {
                 conjugations = new Dictionary<string, ConjugationsJson>();
                 knownPOS = new HashSet<string>();
-                JavaScriptSerializer json = new JavaScriptSerializer();
                 string jsonRaw = File.ReadAllText(Settings.app.ConjugationsPath);
-                IList data = (IList)json.DeserializeObject(jsonRaw);
+                IList data = JsonSerializer.Deserialize<IList>(jsonRaw);
                 foreach (var it in data) {
                     IDictionary conjJson = (IDictionary)it;
                     List<ConjugationsVariantJson> tenses = new List<ConjugationsVariantJson>();

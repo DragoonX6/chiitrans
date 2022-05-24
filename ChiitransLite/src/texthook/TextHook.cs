@@ -245,19 +245,24 @@ namespace ChiitransLite.texthook {
                 return false;
             }
             bool ok = true;
+            CancellationTokenSource source = new();
+            CancellationToken token = source.Token;
+
             Thread removingThread = new Thread(new ThreadStart(() => {
                 if (isCompat) {
                     ok = TextHookInteropCompat.TextHookRemoveHook(hook.addr) == OK;
                 } else {
                     ok = TextHookInterop.TextHookRemoveHook(hook.addr) == OK;
                 }
+
+                token.ThrowIfCancellationRequested();
             }));
             removingThread.IsBackground = true;
             removingThread.Start();
             if (removingThread.Join(1000)) {
                 return ok;
             } else {
-                removingThread.Abort();
+                source.Cancel();
                 Logger.log("Freeze trying to remove hook: " + hook.code);
                 return true;
             }

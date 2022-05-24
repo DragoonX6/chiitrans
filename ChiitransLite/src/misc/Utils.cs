@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 using System.Windows.Forms;
 using System.IO;
-using System.Web.Script.Serialization;
+using System.Text.Json;
 using System.Diagnostics;
 using System.Threading;
 using System.Configuration;
@@ -25,11 +25,8 @@ namespace ChiitransLite.misc {
         public static Uri getUriForBrowser(string page) {
             return new Uri("file://" + Path.GetFullPath(Path.Combine(getRootPath(), "www", page)));
         }
-
-        private static ThreadLocal<JavaScriptSerializer> js = new ThreadLocal<JavaScriptSerializer>(() => new JavaScriptSerializer());
-
         public static string toJson(object data) {
-            return js.Value.Serialize(data);
+            return JsonSerializer.Serialize(data);
         }
 
         public static int startProcess(string exeName) {
@@ -109,11 +106,8 @@ namespace ChiitransLite.misc {
             return res.Id;
         }
 
-        internal static JavaScriptSerializer getJsonSerializer() {
-            return js.Value;
-        }
-
         private static string appPath;
+
         internal static string getAppDataPath() {
             if (appPath == null) {
                 appPath = Path.GetDirectoryName(ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath);
