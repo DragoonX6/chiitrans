@@ -21,26 +21,26 @@ namespace ChiitransLite.translation.edict.inflect {
                 knownPOS = new HashSet<string>();
                 string jsonRaw = File.ReadAllText(Settings.app.ConjugationsPath);
                 IList data = JsonSerializer.Deserialize<IList>(jsonRaw);
-                foreach (var it in data) {
-                    IDictionary conjJson = (IDictionary)it;
+                foreach (JsonElement it in data) {
                     List<ConjugationsVariantJson> tenses = new List<ConjugationsVariantJson>();
-                    var jsonTenses = (IList)conjJson["Tenses"];
+                    var jsonTenses = it.GetProperty("Tenses").EnumerateArray();
                     foreach (var form in jsonTenses) {
-                        IDictionary formJson = (IDictionary)form;
+                        JsonElement nextType;
+                        bool hasNextType = form.TryGetProperty("Next Type", out nextType);
                         var conjVar = new ConjugationsVariantJson {
-                            Formal = (bool)formJson["Formal"],
-                            Negative = (bool)formJson["Negative"],
-                            Suffix = (string)formJson["Suffix"],
-                            Tense = (string)formJson["Tense"],
-                            NextType = (string)formJson["Next Type"] ?? ((string)formJson["Tense"] == "Te-form" ? "te-form" : null),
-                            Ignore = formJson["Ignore"] != null
+                            Formal = form.GetProperty("Formal").GetBoolean(),
+                            Negative = form.GetProperty("Negative").GetBoolean(),
+                            Suffix = form.GetProperty("Suffix").GetString(),
+                            Tense = form.GetProperty("Tense").GetString(),
+                            NextType = hasNextType ? nextType.GetString() : (form.GetProperty("Tense").GetString() == "Te-form" ? "te-form" : null),
+                            Ignore = form.TryGetProperty("Ignore", out _)
                         };
                         //conjVar.Ignore = conjVar.Ignore || (conjVar.Tense == "Stem" && conjVar.Suffix == "");
                         tenses.Add(conjVar);
                     }
                     var conj = new ConjugationsJson {
-                        Name = (string)conjJson["Name"],
-                        PartOfSpeech = (string)conjJson["Part of Speech"],
+                        Name = it.GetProperty("Name").GetString(),
+                        PartOfSpeech = it.GetProperty("Part of Speech").GetString(),
                         Tenses = tenses
                     };
                     conj.addBaseFormSuffix(tenses[0].Suffix);
