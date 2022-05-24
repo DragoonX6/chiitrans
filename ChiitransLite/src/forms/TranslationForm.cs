@@ -11,13 +11,12 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Configuration;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Text;
+using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,7 +54,10 @@ namespace ChiitransLite.forms {
                 }
             }
 
-            public void resizeForm(int dx, int dy) {
+            public void resizeForm(JsonElement _dx, JsonElement _dy) {
+                int dx = _dx.GetInt32();
+                int dy = _dy.GetInt32();
+
                 if (form.WindowState != FormWindowState.Normal) {
                     return;
                 }
@@ -111,36 +113,28 @@ namespace ChiitransLite.forms {
                 form.Close();
             }
 
-            public void showHint(double parseId, double num, double x, double y, double h, double browserW, double browserH) {
-                form.showHint((int)parseId, (int)num, x, y, h, browserW, browserH);
+            public void showHint(JsonElement parseId, JsonElement num, JsonElement x, JsonElement y, JsonElement h, JsonElement browserW, JsonElement browserH) {
+                form.showHint(parseId.GetInt32(), num.GetInt32(), x.GetDouble(), y.GetDouble(), h.GetDouble(), browserW.GetDouble(), browserH.GetDouble());
             }
 
             public void hideHint() {
                 form.hideHint();
             }
 
-            public bool onWheel(int units) {
-                return form.hintForm.onWheel(units);
+            public bool onWheel(JsonElement units) {
+                return form.hintForm.onWheel(units.GetInt32());
             }
 
-            public void setTransparentMode(bool isEnabled) {
-                form.setTransparentMode(isEnabled, false);
+            public void setTransparentMode(JsonElement isEnabled) {
+                form.setTransparentMode(isEnabled.GetBoolean(), false);
             }
 
-            public void setTransparencyLevel(double level) {
-                form.setTransparencyLevel(level);
+            public void setTransparencyLevel(JsonElement level) {
+                form.setTransparencyLevel(level.GetDouble());
             }
 
-            public void setTransparencyLevel(decimal level) {
-                form.setTransparencyLevel((double)level);
-            }
-
-            public void setFontSize(double fontSize) {
-                Settings.app.fontSize = fontSize;
-            }
-
-            public void setFontSize(decimal fontSize) {
-                Settings.app.fontSize = (double)fontSize;
+            public void setFontSize(JsonElement fontSize) {
+                Settings.app.fontSize = fontSize.GetDouble();
             }
 
             public object getOptions() {
@@ -155,35 +149,43 @@ namespace ChiitransLite.forms {
                 return Utils.isWindowsVistaOrLater() && Winapi.DwmIsCompositionEnabled();
             }
 
-            public void showContextMenu(string selection, bool isRealSelection, int selectedParseResultId) {
-                form.showContextMenu(selection, isRealSelection, selectedParseResultId);
+            public void showContextMenu(JsonElement selection, JsonElement isRealSelection, JsonElement selectedParseResultId) {
+                form.showContextMenu(selection.GetString(), isRealSelection.GetBoolean(), selectedParseResultId.GetInt32());
             }
 
-            public void registerTranslators(object[] trans) {
-                Settings.app.registerTranslators(trans.Cast<string>().ToList());
+            public void registerTranslators(JsonElement trans) {
+                JsonElement.ArrayEnumerator elements = trans.EnumerateArray();
+                List<string> translators = new();
+
+                foreach(JsonElement element in elements)
+                {
+                    translators.Add(element.GetString());
+                }
+
+                Settings.app.registerTranslators(translators);
             }
 
-            public string translateAtlas(string src) {
+            public string translateAtlas(JsonElement src) {
                 return TranslationService.instance.limiter(
-                    () => Atlas.instance.translate(src),
+                    () => Atlas.instance.translate(src.GetString()),
                     "(skip)");
             }
 
-            public string translateAtlas2(string src) {
+            public string translateAtlas2(JsonElement src) {
                 return TranslationService.instance.limiter(
-                    () => Atlas.instance.translateWithReplacements(src),
+                    () => Atlas.instance.translateWithReplacements(src.GetString()),
                     "(skip)");
             }
 
-            public string translateCustom(string src) {
-                return PoManager.instance.getTranslation(src);
+            public string translateCustom(JsonElement src) {
+                return PoManager.instance.getTranslation(src.GetString());
             }
 
-            public object httpRequest(string url, bool useShiftJis, string method, string query) {
+            public object httpRequest(JsonElement url, JsonElement useShiftJis, JsonElement method, JsonElement query) {
                 return TranslationService.instance.limiter<object>(
                     () => {
                         try {
-                            return new { res = Utils.httpRequest(url, useShiftJis, method, query) };
+                            return new { res = Utils.httpRequest(url.GetString(), useShiftJis.GetBoolean(), method.GetString(), query.GetString()) };
                         } catch (Exception ex) {
                             return new { error = ex.Message };
                         }
