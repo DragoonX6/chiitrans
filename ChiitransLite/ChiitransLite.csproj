@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<OutputType>WinExe</OutputType>
 		<TargetFramework>net5.0-windows</TargetFramework>
@@ -6,6 +6,7 @@
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 		<ApplicationIcon>ohayo.ico</ApplicationIcon>
 		<UseAppHost>true</UseAppHost>
+		<NoWarn>CA1416</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="System.Management" Version="6.0.0" />
