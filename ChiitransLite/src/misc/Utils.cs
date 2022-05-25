@@ -201,7 +201,7 @@ static class Utils
 		IntPtr desktopHandle = Winapi.GetDesktopWindow();
 		IntPtr shellHandle = Winapi.GetShellWindow();
 
-		if(hWnd != null && !hWnd.Equals(IntPtr.Zero))
+		if(!hWnd.Equals(IntPtr.Zero))
 		{
 			//Check we haven't picked up the desktop or the shell
 			if(!(hWnd.Equals(desktopHandle) || hWnd.Equals(shellHandle)))

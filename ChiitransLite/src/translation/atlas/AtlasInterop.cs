@@ -39,7 +39,7 @@ class AtlasInterop
 			if(destroyEngine != null)
 				destroyEngine();
 
-			if(atlecont != null && atlecont != IntPtr.Zero)
+			if(atlecont != IntPtr.Zero)
 				Winapi.FreeLibrary(atlecont);
 		}
 		catch
