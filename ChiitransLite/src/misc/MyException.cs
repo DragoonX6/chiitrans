@@ -1,10 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System;
 
-namespace ChiitransLite.misc {
-    class MyException : Exception {
-        public MyException(string message) : base(message) { }
-    }
+namespace ChiitransLite.misc
+{
+class MyException: Exception
+{
+	public MyException(string message): base(message)
+	{
+	}
+}
 }
