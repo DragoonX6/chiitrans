@@ -157,7 +157,7 @@ class TranslationService
 		try
 		{
 			int maxTasks = MAX_CONCURRENT_TRANSLATION_TASKS
-				* Settings.app.getSelectedTranslators(true).Count;
+				* Settings.app.getSelectedTranslators().Count;
 
 			if(activeTasks < maxTasks)
 				return func();

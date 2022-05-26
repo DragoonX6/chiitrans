@@ -405,12 +405,6 @@ class Settings
 		isSelectedReadingsDirty = true;
 	}
 
-	public bool atlasAsk
-	{
-		get => Properties.Settings.Default.atlasAsk;
-		set => Properties.Settings.Default.atlasAsk = value;
-	}
-
 	public bool ieUpgradeAsk
 	{
 		get => Properties.Settings.Default.ieUpgradeAsk;
@@ -430,21 +424,6 @@ class Settings
 		set => Properties.Settings.Default.clipboardJapanese = value;
 	}
 
-	public string atlasEnv
-	{
-		get
-		{
-			string res = Properties.Settings.Default.atlasEnv;
-
-			if(string.IsNullOrEmpty(res))
-				return "General";
-			else
-				return res;
-		}
-
-		set => Properties.Settings.Default.atlasEnv = value;
-	}
-
 	internal bool isShowTranslation() =>
 		translationDisplay == TranslationDisplay.TRANSLATION
 			|| translationDisplay == TranslationDisplay.BOTH;
@@ -454,13 +433,10 @@ class Settings
 
 	public List<string> getTranslators() => translators;
 
-	public List<string> getSelectedTranslators(bool isAtlasPresent)
+	public List<string> getSelectedTranslators()
 	{
 		if(selectedTranslators == null)
-			if(isAtlasPresent)
-				selectedTranslators = new List<string> { "ATLAS" };
-			else
-				selectedTranslators = new List<string> { "Google" };
+			selectedTranslators = new List<string>{ "Google" };
 
 		return selectedTranslators.Intersect(translators).ToList();
 	}

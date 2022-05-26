@@ -14,7 +14,6 @@ using ChiitransLite.texthook;
 using ChiitransLite.texthook.ext;
 using ChiitransLite.translation;
 using ChiitransLite.settings;
-using ChiitransLite.translation.atlas;
 
 namespace ChiitransLite.forms
 {
@@ -354,9 +353,6 @@ public partial class MainForm: Form
 		}
 		else
 		{
-			if(Atlas.instance.isNotFound && Settings.app.atlasAsk)
-				new AtlasNotFoundForm().ShowDialog();
-
 			if(ieVer == 8
 			   && Utils.isWindowsVistaOrLater()
 			   && Settings.app.ieUpgradeAsk)

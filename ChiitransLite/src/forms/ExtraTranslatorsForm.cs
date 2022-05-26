@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows.Forms;
 
 using ChiitransLite.settings;
-using ChiitransLite.translation.atlas;
 
 namespace ChiitransLite.forms
 {
@@ -89,8 +88,7 @@ public partial class ExtraTranslatorsForm: Form
 
 	private void ExtraTranslatorsForm_Load(object sender, EventArgs e)
 	{
-		List<string> selectedTranslators = Settings.app.getSelectedTranslators(
-			!Atlas.instance.isNotFound);
+		List<string> selectedTranslators = Settings.app.getSelectedTranslators();
 
 		listBox1.Items.Clear();
 		listBox1.Items.AddRange(selectedTranslators.ToArray());

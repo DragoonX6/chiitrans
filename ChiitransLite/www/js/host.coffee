@@ -1,4 +1,4 @@
-﻿qid = new Date().getTime()
+qid = new Date().getTime()
 _host = null
 callbacks = {}
 translators = {}

@@ -1,4 +1,4 @@
-﻿MAX_LOG = 30
+MAX_LOG = 30
 $history = null
 $content = null
 $current = null
@@ -29,7 +29,7 @@ $ ->
 
     $('.caption_btn').mousedown (ev) ->
         ev.stopPropagation()
-    
+
     $('#minimize').click ->
         host().formMinimize()
 
@@ -45,7 +45,7 @@ $ ->
             if ev.which == 1
                 ev.preventDefault()
                 host().resizeForm(dx, dy)
-    
+
     makeResizer('sideTop', 0, -1)
     makeResizer('sideBottom', 0, 1)
     makeResizer('sideLeft', -1, 0)
@@ -68,7 +68,7 @@ $ ->
 
     hiding = false
     hidingTimer = null
-    
+
     $(document).on('mouseenter', '.basetext', (ev) ->
         if hiding
             hiding = false
@@ -76,7 +76,7 @@ $ ->
         $this = $(this).parents('.parsed')
         ofs = $this.offset()
         host().showHint($this.parents('.entry').data('id'), $this.data('num'),
-            Math.round(ofs.left), Math.round(ofs.top), $this.height(), 
+            Math.round(ofs.left), Math.round(ofs.top), $this.height(),
             $(window).width(), $(window).height(), ->)
     ).on('mouseleave', '.parsed', (ev) ->
         if not hiding
@@ -108,7 +108,7 @@ $ ->
     .on 'mouseleave', '.parsed', ->
         currentWord = null
         currentEntryId = 0
-    
+
     $content = $('#content')
     $history = $('#history')
     $current = $('#current')
@@ -143,7 +143,7 @@ $ ->
     toLg = (v) ->
         v = v / 100
         -(100 * (Math.log v) / (Math.log 4))
-    
+
     $font = $('#font_slider').slider
         orientation: 'vertical'
         min: -100
@@ -169,7 +169,7 @@ $ ->
         setFontSize 100
         host().setFontSize 100
         $('#font_slider').slider('value', toLg 100)
-    
+
 lastEntryId = -1
 lastParseResult = null
 $currentEntry = null
@@ -187,7 +187,7 @@ updateTranslationResult = (id, translationResultHtml) ->
     if entry.length
         $('#translation', entry).html translationResultHtml
     return
-    
+
 
 newParseResult = window.newParseResult = (id, parseResult) ->
     if id < lastEntryId
@@ -270,7 +270,7 @@ createNewEntry = (id) ->
         """</div>""")
     $current.append $res
     $res
-    
+
 renderParseResult = (p) ->
     parseResult = JSON.parse p
     lastParseResult = parseResult
@@ -298,7 +298,7 @@ renderParseResult = (p) ->
                     part = parseResult.parts[j]
                     if not _.isArray(part)
                         firstCharIdx = part.indexOf(firstChar)
-                        if firstCharIdx != -1 and not (j == 0 and firstCharIdx == 0) 
+                        if firstCharIdx != -1 and not (j == 0 and firstCharIdx == 0)
                             breakIndex = j
                             break
     for part in parseResult.parts
@@ -335,10 +335,7 @@ renderParseResult = (p) ->
 renderOldTranslationResult = (tr) ->
     tr = JSON.parse tr
     $res = $('<span>')
-    if not tr.isAtlas
-        $res.addClass 'no_atlas'
-    else
-        $res.addClass 'atlas'
+    $res.addClass 'no_atlas'
     $res.html _.escape(tr.text).replace(/\n/g, '<br>')
     $res
 
@@ -350,10 +347,7 @@ renderSimpleTranslationResult = (text) ->
 renderMultiTranslationResult = (translators) ->
     $res = $('<table class="multiTranslation">')
     for t in translators
-        if t == "ATLAS with TAHelper replacements"
-            text = "ATLAS2"
-        else
-            text = t
+        text = t
         $res.append """
             <tr>
                 <td class="translator">#{text}</td>
@@ -363,7 +357,7 @@ renderMultiTranslationResult = (translators) ->
 
 updateMultiTranslationResult = (el, trans, text) ->
     $(""".result[data-trans="#{trans}"]""", el)
-        .html _.escape(text).replace(/\n/g, '<br>') 
+        .html _.escape(text).replace(/\n/g, '<br>')
 
 log = (s) ->
     $('<div>').text(s).appendTo $('#log')
@@ -384,7 +378,7 @@ makePopupSlider = (slider, trig) ->
         isMouseInside = true
     .mouseleave ->
         isMouseInside = false
-        if not isMouseDown 
+        if not isMouseDown
             slider.hide()
     .mousedown ->
         isMouseDown = true
@@ -412,7 +406,7 @@ setFontSize = (size) ->
     catch e
         $('#fontSizeStyle').html ".font_zoom { font-size: #{size}% }"
     return
-    
+
 getCurrentWord = window.getCurrentWord = ->
     if getTextSelection()
         null
@@ -430,13 +424,13 @@ translate = window.translate = (id, raw, src, translatorsListJson) ->
     ex = { id: id, rawText: raw }
     if translatorsList.length <= 1
         for t in translatorsList
-            translators[t] src, (res) -> 
+            translators[t] src, (res) ->
                 updateTranslationResult id, renderSimpleTranslationResult res
             , ex
     else
         container = renderMultiTranslationResult translatorsList
         updateTranslationResult id, container
-        for t in translatorsList 
+        for t in translatorsList
             do (t) =>
                 translators[t] src, (res) ->
                     updateMultiTranslationResult container, t, res

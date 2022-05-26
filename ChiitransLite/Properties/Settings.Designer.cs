@@ -214,18 +214,6 @@ namespace ChiitransLite.Properties {
 
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool atlasAsk {
-            get {
-                return ((bool)(this["atlasAsk"]));
-            }
-            set {
-                this["atlasAsk"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("[\"からそう\",\"とこのま\",\"かな\",\"しな\",\"はみた\",\"ほんとな\",\"うんじゃ\",\"いんじゃ\",\"ていこう\",\"なんだい\",\"しょう\",\"えんじゃ\",\"よ" +
             "のう\",\"はめん\",\"よっか\",\"そうこ\",\"ことする\",\"カッコし\",\"はちく\",\"はやめておけ\",\"ちらから\",\"ことし\",\"いどうした\",\"にいん\",\"わ" +
             "れてなくて\",\"りがい\",\"ともできる\",\"そうは\",\"いいん\",\"しょうが\",\"いるか\",\"しみで\",\"あるか\",\"ニした\",\"うからねぇ\",\"からねこ\",\"" +
@@ -310,18 +298,6 @@ namespace ChiitransLite.Properties {
             }
             set {
                 this["selectedReadings"] = value;
-            }
-        }
-
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string atlasEnv {
-            get {
-                return ((string)(this["atlasEnv"]));
-            }
-            set {
-                this["atlasEnv"] = value;
             }
         }
 

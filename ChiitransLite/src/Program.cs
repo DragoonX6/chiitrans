@@ -7,7 +7,6 @@ using System.Windows.Forms;
 
 using ChiitransLite.forms;
 using ChiitransLite.misc;
-using ChiitransLite.translation.atlas;
 using ChiitransLite.translation.edict;
 
 namespace ChiitransLite
@@ -44,11 +43,6 @@ static class Program
 
 		Task.Factory.StartNew(() =>
 		{
-			Atlas.instance.initialize();
-		});
-
-		Task.Factory.StartNew(() =>
-		{
 			Edict.instance.initialize();
 		});
 
@@ -63,7 +57,6 @@ static class Program
 					settingsSaveTimer.Change(Timeout.Infinite, Timeout.Infinite);
 
 				settings.Settings.app.save();
-				Atlas.instance.close();
 				texthook.TextHookInterop.TextHookCleanup();
 			}
 			catch(Exception e)

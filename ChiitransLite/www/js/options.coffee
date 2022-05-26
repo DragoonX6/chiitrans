@@ -1,4 +1,4 @@
-﻿isDirty = false
+isDirty = false
 isClipboardTranslation = false
 
 $ ->
@@ -21,13 +21,13 @@ $ ->
 
     $('#showHooks').click ->
         host().showHookForm()
-        
+
     $('#showNames').click ->
         host().showNamesForm ->
 
     $('#showPoFiles').click ->
         host().showPoFiles ->
-        
+
     $('#reset').click ->
         host().resetParsePreferences()
 
@@ -63,7 +63,7 @@ setRadioValue = (name, value) ->
 
 getRadioValue = (name) ->
     $("""input[type=radio][name="#{name}"]:checked""").val()
-    
+
 resetOptionsInt = (op) ->
     setClipboardTranslation op.clipboard
     $('#sentenceDelay').val op.sentenceDelay
@@ -82,11 +82,6 @@ resetOptionsInt = (op) ->
     for theme in op.themes
         $theme.append """<option value="#{_.escape theme}">#{_.escape theme}</option>"""
     $theme.val(op.theme ? "")
-    $atlasEnv = $('#atlasEnv')
-    $atlasEnv.empty()
-    for env in op.atlasEnvList
-        $atlasEnv.append """<option value="#{_.escape env}">#{_.escape env}</option>"""
-    $atlasEnv.val op.atlasEnv
     $('#separateWords').prop 'checked', op.separateWords
     $('#separateSpeaker').prop 'checked', op.separateSpeaker
     $('#stayOnTop').prop 'checked', op.stayOnTop
@@ -105,7 +100,6 @@ saveOptions = ->
             theme: $('#theme').val()
             separateWords: $('#separateWords').prop('checked')
             separateSpeaker: $('#separateSpeaker').prop('checked')
-            atlasEnv: $('#atlasEnv').val()
             stayOnTop: $('#stayOnTop').prop('checked')
             clipboardJapanese: $('#clipboardJapanese').prop('checked')
         host().saveOptions op

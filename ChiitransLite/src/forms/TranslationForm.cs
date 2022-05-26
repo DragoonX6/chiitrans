@@ -19,7 +19,6 @@ using ChiitransLite.misc;
 using ChiitransLite.settings;
 using ChiitransLite.texthook;
 using ChiitransLite.translation;
-using ChiitransLite.translation.atlas;
 using ChiitransLite.translation.edict.parseresult;
 using ChiitransLite.translation.edict;
 using ChiitransLite.translation.po;
@@ -185,16 +184,6 @@ public partial class TranslationForm: Form
 			Settings.app.registerTranslators(translators);
 		}
 
-		public string translateAtlas(JsonElement src) =>
-			TranslationService.instance.limiter(
-				() => Atlas.instance.translate(src.GetString()),
-				"(skip)");
-
-		public string translateAtlas2(JsonElement src) =>
-			TranslationService.instance.limiter(
-				() => Atlas.instance.translateWithReplacements(src.GetString()),
-				"(skip)");
-
 		public string translateCustom(JsonElement src) =>
 			PoManager.instance.getTranslation(src.GetString());
 
@@ -249,8 +238,7 @@ public partial class TranslationForm: Form
 
 		TranslationService.instance.onTranslationRequest += (id, raw, src) =>
 		{
-			List<string> translators = Settings.app.getSelectedTranslators(
-				!Atlas.instance.isNotFound);
+			List<string> translators = Settings.app.getSelectedTranslators();
 
 			if(translators.Count == 1 && Settings.session.po != null)
 			{
@@ -262,7 +250,7 @@ public partial class TranslationForm: Form
 					webBrowser1.callScript(
 						"newTranslationResult",
 						id,
-						Utils.toJson(new TranslationResult(poTrans, false)));
+						Utils.toJson(new TranslationResult(poTrans)));
 
 					return;
 				}

@@ -1,4 +1,4 @@
-﻿data = null
+data = null
 pageNum = 0
 defs = {}
 nameDefs = {}
@@ -21,7 +21,7 @@ $ ->
     $('#prevPage').click ->
         pagePrev()
         return
-    
+
     $('#nextPage').click ->
         pageNext()
         return
@@ -181,4 +181,4 @@ makeSense = (sense) ->
     if sense.misc?
         res.append " " + (makeMisc sense.misc)
     res
-    
+

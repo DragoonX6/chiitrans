@@ -9,7 +9,6 @@ using System.Windows.Forms;
 
 using ChiitransLite.misc;
 using ChiitransLite.settings;
-using ChiitransLite.translation.atlas;
 
 namespace ChiitransLite.forms
 {
@@ -107,8 +106,6 @@ public partial class OptionsForm: Form
 			separateWords       = Settings.app.separateWords,
 			separateSpeaker     = Settings.app.separateSpeaker,
 			nameDict            = Settings.app.nameDict.ToString(),
-			atlasEnv            = Settings.app.atlasEnv,
-			atlasEnvList        = getAtlasEnvList(),
 			stayOnTop           = Settings.app.stayOnTop,
 			clipboardJapanese   = Settings.app.clipboardJapanese
 		};
@@ -124,7 +121,6 @@ public partial class OptionsForm: Form
 		bool separateWords     = op.GetProperty("separateWords").GetBoolean();
 		bool separateSpeaker   = op.GetProperty("separateSpeaker").GetBoolean();
 		string nameDictStr     = op.GetProperty("nameDict").GetString();
-		string atlasEnv        = op.GetProperty("atlasEnv").GetString();
 		bool stayOnTop         = op.GetProperty("stayOnTop").GetBoolean();
 		bool clipboardJapanese = op.GetProperty("clipboardJapanese").GetBoolean();
 
@@ -146,12 +142,6 @@ public partial class OptionsForm: Form
 
 		if(Enum.TryParse(nameDictStr, out nameDict))
 			Settings.app.nameDict = nameDict;
-
-		if(atlasEnv != Settings.app.atlasEnv)
-		{
-			Settings.app.atlasEnv = atlasEnv;
-			Atlas.instance.reinitialize();
-		}
 
 		Settings.app.cssTheme          = theme;
 		Settings.app.separateWords     = separateWords;
@@ -206,16 +196,6 @@ public partial class OptionsForm: Form
 			Path.Combine(Utils.getRootPath(), "www\\themes"),
 			"*.css")
 		.Select(Path.GetFileNameWithoutExtension);
-
-	private IEnumerable<string> getAtlasEnvList()
-	{
-		var res = Atlas.instance.getEnvList().ToList();
-
-		if(!res.Contains(Settings.app.atlasEnv))
-			res.Add(Settings.app.atlasEnv);
-
-		return res;
-	}
 
 	internal void resetParsePreferences()
 	{

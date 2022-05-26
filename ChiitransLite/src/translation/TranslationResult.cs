@@ -2,13 +2,11 @@ namespace ChiitransLite.translation
 {
 class TranslationResult
 {
-	public readonly bool isAtlas;
 	public readonly string text;
 
-	public TranslationResult(string text, bool isAtlas)
+	public TranslationResult(string text)
 	{
 		this.text = text;
-		this.isAtlas = isAtlas;
 	}
 }
 }

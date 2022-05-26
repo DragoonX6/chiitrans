@@ -1,4 +1,4 @@
-﻿isSelectWindow = false
+isSelectWindow = false
 
 updateProcesses = ->
     host().getProcesses ({procs, defaultName, defaultPid}) ->
@@ -196,7 +196,7 @@ newSentence = window.newSentence = (id, text) ->
                 $('#contexts').prepend ctx.tr
             else
                 lastEnabled.after ctx.tr
-            
+
     return
 
 disableContexts = window.disableContexts = (idsJson) ->
