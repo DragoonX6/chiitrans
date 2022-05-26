@@ -10,3 +10,10 @@ words.txt
 bin/
 obj/
 launchsettings.json
+
+ChiitransLite/www/js/hint.js
+ChiitransLite/www/js/host.js
+ChiitransLite/www/js/index.js
+ChiitransLite/www/js/options.js
+ChiitransLite/www/js/translation.js
+ChiitransLite/www/js/translators.js
